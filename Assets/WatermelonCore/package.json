@@ -1,10 +1,10 @@
 {
   "name": "com.unity.watermeloncore",
   "displayName": "WatermelonCore",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "unity": "2021.1",
   "dependencies": {
-    "com.unity.servicelocator": "https://github.com/TeamAcMong/Unity-Service-Locator.git#1.0.4",
+    "com.unity.servicelocator": "https://github.com/TeamAcMong/Unity-Service-Locator.git#1.0.3",
     "com.cysharp.unitask": "2.5.10"
   },
   "samples": [
