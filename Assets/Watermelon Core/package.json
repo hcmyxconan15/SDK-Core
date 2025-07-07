@@ -1,0 +1,19 @@
+{
+  "name": "com.unity.WatermelonCore",
+  "displayName": "WatermelonCore",
+  "description": "",
+  "version": "1.0.0",
+  "unity": "2021.1",
+  "keywords": [ "best", "besthttp", "http", "http2", "tls", "https", "DNS", "TCP", "request", "response" ],
+  "dependencies": {
+    "com.unity.servicelocator": "https://github.com/TeamAcMong/Unity-Service-Locator.git#1.0.3",
+    "com.cysharp.unitask": "2.5.10"
+  },
+  "samples": [
+    {
+      "displayName": "Samples with UI",
+      "description": "Contains sample code for various HTTP related scenarios.",
+      "path": "Samples~/With UI"
+    }
+  ]
+}
