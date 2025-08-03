@@ -1,10 +1,10 @@
 {
-  "name": "com.unity.watermeloncore",
+  "name": "com.undercats.watermeloncore",
   "displayName": "WatermelonCore",
   "version": "1.0.5",
   "unity": "2021.1",
   "dependencies": {
-    "com.undercats.servicelocator
+    "com.undercats.servicelocator": "1.0.6"
   },
   "samples": [
     {
