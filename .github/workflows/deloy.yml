@@ -1,0 +1,68 @@
+name: Deploy UPM Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Auto-detect package.json and deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Find package.json and extract version
+        id: extract_version
+        run: |
+          MATCH_FILE=$(find . -type f -name package.json -exec grep -l '"name": "com.undercats.watermeloncore"' {} \;)
+
+          if [ -z "$MATCH_FILE" ]; then
+            echo "❌ Không tìm thấy package.json phù hợp!"
+            exit 1
+          fi
+
+          VERSION=$(jq -r .version "$MATCH_FILE")
+          echo "MATCH_FILE=$MATCH_FILE" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "✅ Found package.json at $MATCH_FILE"
+          echo "🔢 Version: $VERSION"
+
+      - name: Check if tag already exists
+        run: |
+          if git ls-remote --tags origin | grep -q "refs/tags/$VERSION"; then
+            echo "❌ Tag $VERSION already exists. Skipping deploy."
+            exit 0
+          fi
+
+      - name: Deploy UPM package
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          set -ex
+
+          SEMVER="$VERSION"
+          PREFIX=$(dirname "$MATCH_FILE" | sed 's|^\./||')
+          BRANCH="upm"
+
+          # Tách subtree và tạo nhánh
+          git subtree split --prefix="$PREFIX" --branch "$BRANCH"
+
+          # Gắn tag vào nhánh đó
+          git tag "$SEMVER" "$BRANCH"
+
+          # Cấu hình remote để sử dụng token
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+
+          # Push tag duy nhất
+          git push origin "$SEMVER"
+
+          # Xoá nhánh tạm
+          git branch -D "$BRANCH"
