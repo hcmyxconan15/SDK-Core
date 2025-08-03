@@ -4,8 +4,8 @@ using UnityEngine;
 using System.Threading;
 #if UNITASK_ENABLED
 using Cysharp.Threading.Tasks;
-using System.Threading.Tasks;
 #else
+using System.Threading.Tasks;
 #endif
 
 namespace Watermelon
@@ -66,7 +66,11 @@ namespace Watermelon
 
         }
         
+#if UNITASK_ENABLED
         protected virtual async UniTask OnDoneProcess()
+#else
+        protected virtual async Task OnDoneProcess()
+#endif
         {
             Debug.Log("OnDoneProcess");
             _loadingProgressUIBase.ForceDone();
@@ -74,7 +78,7 @@ namespace Watermelon
 #if UNITASK_ENABLED
             await UniTask.WaitUntil(_loadingProgressUIBase.IsAnimProgressDone);
 #else
-            while (!_loadingProgressUIBase.IsAnimProgressDone)
+            while (!_loadingProgressUIBase.IsAnimProgressDone())
             {
                 await Task.Delay(16); // ~60fps polling
             }
@@ -121,7 +125,11 @@ namespace Watermelon
                     }
 
                 }
+#if UNITASK_ENABLED
                 OnDoneProcess().Forget();
+#else
+                OnDoneProcess();
+#endif
             }
             catch (OperationCanceledException ocex)
             {
