@@ -1,6 +1,11 @@
-using Watermelon;
+#if UNITASK_ENABLED
 using Cysharp.Threading.Tasks;
+#else
+using System.Threading.Tasks;
+#endif
+#if FIREBASE_ENABLED
 using Firebase.Extensions;
+#endif
 using UnityEngine;
 
 namespace Watermelon
@@ -12,7 +17,13 @@ namespace Watermelon
 
         public override void CreateComponent(GameObject holderObject)
         {
+#if FIREBASE_ENABLED
+#if UNITASK_ENABLED
             Firebase.InitSDK().Forget();
+#else
+            Firebase.InitSDK();
+#endif
+#endif
         }
     }
 }

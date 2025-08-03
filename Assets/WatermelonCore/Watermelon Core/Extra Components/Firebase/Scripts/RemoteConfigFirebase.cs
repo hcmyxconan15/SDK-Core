@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ConceptSystem.SeviceLocator.Scripts;
+#if FIREBASE_ENABLED
 using Firebase.Extensions;
 using Firebase.RemoteConfig;
 using Newtonsoft.Json;
-using Wolffun.Log;
+#endif
 using UnityEngine;
 
 namespace Watermelon
@@ -23,9 +23,11 @@ namespace Watermelon
 
         protected void Awake()
         {
+#if FIREBASE_ENABLED
             ServiceLocator.Global.Register(this);
 
             Firebase.RegisterOnDoneInitFirebaseCallback(dependencyStatus => { InitRemoteConfigs(); });
+#endif
         }
 
         public void InitRemoteConfigs()
@@ -58,7 +60,7 @@ namespace Watermelon
                 }
                 catch (Exception e)
                 {
-                    CommonLog.LogError(
+                    Debug.LogError(
                         $"Exception when get DefaultConfig of {customRemoteConfigData.GetType()}: {e.Message}");
                 }
             }
@@ -66,12 +68,14 @@ namespace Watermelon
 
             versions = new() { Application.version };
             _defaultConfigs["Version"] = versions;
-
+#if FIREBASE_ENABLED
             FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(_defaultConfigs);
+#endif
         }
 
         private void FetchingConfigFromRemoteConfig()
         {
+#if FIREBASE_ENABLED
             try
             {
                 var firebaseRemote = FirebaseRemoteConfig.DefaultInstance;
@@ -87,19 +91,19 @@ namespace Watermelon
                             {
                                 case LastFetchStatus.Success:
                                     //FirebaseRemoteConfig.ActivateFetched();
-                                    CommonLog.LogError(
+                                    Debug.LogError(
                                         $"Remote data loaded and ready (last fetch time {info.FetchTime}).");
                                     break;
                                 case LastFetchStatus.Failure:
-                                    CommonLog.LogError($"Failure {info.LastFetchFailureReason}");
+                                    Debug.LogError($"Failure {info.LastFetchFailureReason}");
 
                                     switch (info.LastFetchFailureReason)
                                     {
                                         case FetchFailureReason.Error:
-                                            CommonLog.LogError("Fetch failed for unknown reason");
+                                            Debug.LogError("Fetch failed for unknown reason");
                                             break;
                                         case FetchFailureReason.Throttled:
-                                            CommonLog.LogError($"Fetch throttled until {info.ThrottledEndTime}");
+                                            Debug.LogError($"Fetch throttled until {info.ThrottledEndTime}");
                                             break;
                                         case FetchFailureReason.Invalid:
                                             break;
@@ -110,7 +114,7 @@ namespace Watermelon
                                     _isDoneFetch = true;
                                     return;
                                 case LastFetchStatus.Pending:
-                                    CommonLog.LogError("Remote Config pending....");
+                                    Debug.LogError("Remote Config pending....");
                                     _isDoneFetch = true;
                                     break;
                             }
@@ -128,18 +132,18 @@ namespace Watermelon
                                     }
                                     catch (Exception e)
                                     {
-                                        CommonLog.LogError(
+                                        Debug.LogError(
                                             $"Exception when apply RemoteConfig into {customRemoteConfigData.GetType()}: {e.Message}");
                                     }
                                 }
                             }
 
                             _isDoneFetch = true;
-                            CommonLog.Log("Fetch Remote Data success");
+                            Debug.Log("Fetch Remote Data success");
                         }
                         catch (Exception ex)
                         {
-                            CommonLog.LogError("RemoteConfigManager get data is error: " + ex.GetBaseException() +
+                            Debug.LogError("RemoteConfigManager get data is error: " + ex.GetBaseException() +
                                                "\n" +
                                                ex.StackTrace);
                             _isDoneFetch = true;
@@ -151,6 +155,7 @@ namespace Watermelon
             {
                 _isDoneFetch = true;
             }
+#endif
         }
     }
 

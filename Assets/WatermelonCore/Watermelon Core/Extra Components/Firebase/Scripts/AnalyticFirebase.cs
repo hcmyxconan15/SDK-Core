@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using ConceptSystem.SeviceLocator.Scripts;
+#if UNITASK_ENABLED
 using Cysharp.Threading.Tasks;
+#else
+using System.Threading.Tasks;
+#endif
+#if FIREBASE_ENABLED
 using Firebase;
 using Firebase.Analytics;
 using Firebase.Crashlytics;
+#endif
 using UnityEngine;
-using Wolffun.Log;
 
 namespace Watermelon
 {
@@ -18,21 +22,23 @@ namespace Watermelon
 
         protected virtual void Awake()
         {
+#if FIREBASE_ENABLED
             ServiceLocator.Global.Register(this);
             Firebase.RegisterOnDoneInitFirebaseCallback(dependencyStatus =>
             {
                 if (dependencyStatus == DependencyStatus.Available)
                     Init();
             });
+#endif
         }
 
         public void Init()
         {
+#if FIREBASE_ENABLED
 #if UNITY_ANDROID && !UNITY_EDITOR
             // Set the recommended Crashlytics uncaught exception behavior.
             Crashlytics.ReportUncaughtExceptionsAsFatal = true;
 #endif
-
             FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
             FirebaseAnalytics.SetUserId(SystemInfo.deviceUniqueIdentifier);
             _isInitSuccess = true;
@@ -56,10 +62,12 @@ namespace Watermelon
             }
 
             _listWaitEvents.Clear();
+#endif
         }
 
         protected void LogEventFirebase(string eventName, Dictionary<string, object> values)
         {
+#if FIREBASE_ENABLED
             if (!_isInitSuccess)
             {
                 var waitEvent = new WaitEvent
@@ -77,7 +85,7 @@ namespace Watermelon
 
             try
             {
-                CommonLog.Log($"LogEvent: {eventName}\n{Newtonsoft.Json.JsonConvert.SerializeObject(values)}");
+                Debug.Log($"LogEvent: {eventName}\n{Newtonsoft.Json.JsonConvert.SerializeObject(values)}");
 
                 var listParam = new Parameter[values.Count];
                 var index = 0;
@@ -102,7 +110,7 @@ namespace Watermelon
                 }
 
 #if UNITY_EDITOR
-                CommonLog.Log($"LogEvent: {eventName}\n{Newtonsoft.Json.JsonConvert.SerializeObject(values)}");
+                Debug.Log($"LogEvent: {eventName}\n{Newtonsoft.Json.JsonConvert.SerializeObject(values)}");
                 return;
 #endif
 
@@ -115,6 +123,7 @@ namespace Watermelon
             {
                 Debug.Log("Log event fail" + eventName + " | " + ex.Message);
             }
+#endif
         }
 
         public void LogDebugAnalytic(LogDebugType logDebugType, string function, string className, string feature,
@@ -138,23 +147,37 @@ namespace Watermelon
             }
             catch (Exception ex)
             {
-                CommonLog.LogError("Log debug exception - " + ex.StackTrace.ToString());
+                Debug.LogError("Log debug exception - " + ex.StackTrace.ToString());
             }
 
 #endif
         }
 
         #region USER PROPERTIES
-
+#if UNITASK_ENABLED
         public async UniTaskVoid SetUserProperties()
+#else
+        public async Task SetUserProperties()
+#endif
         {
+#if UNITASK_ENABLED
             await UniTask.WaitUntil(() => _isInitSuccess);
-
+#else
+            await Task.Run(async () =>
+            {
+                while (!_isInitSuccess)
+                {
+                    await Task.Delay(10); // Chờ 10ms trước khi check lại
+                }
+            });
+#endif
+#if FIREBASE_ENABLED
             FirebaseAnalytics.SetUserProperty("level", PlayerPrefs.GetInt("CurrentLevel", 0).ToString());
             FirebaseAnalytics.SetUserProperty("match_number", PlayerPrefs.GetInt("MatchNumber", 0).ToString());
             FirebaseAnalytics.SetUserProperty("number_inter", string.Empty);
             FirebaseAnalytics.SetUserProperty("number_rewarded", "0");
             FirebaseAnalytics.SetUserProperty("number_banner", string.Empty);
+#endif
         }
 
         #endregion
@@ -177,7 +200,7 @@ namespace Watermelon
             }
             catch (Exception e)
             {
-                CommonLog.LogError("LogLoginSuccess error: " + e.Message);
+                Debug.LogError("LogLoginSuccess error: " + e.Message);
                 LogDebugAnalytic(LogDebugType.EXCEPTION, eventName, "AnalyticManager", "LogAnalytic",
                     e.StackTrace);
             }
@@ -205,7 +228,7 @@ namespace Watermelon
             }
             catch (Exception e)
             {
-                CommonLog.LogError("LogAdTrigger error: " + e.StackTrace);
+                Debug.LogError("LogAdTrigger error: " + e.StackTrace);
                 LogDebugAnalytic(LogDebugType.EXCEPTION, eventName, "AnalyticManager", "LogAnalytic",
                     e.StackTrace.ToString());
             }
@@ -234,7 +257,7 @@ namespace Watermelon
             }
             catch (System.Exception ex)
             {
-                CommonLog.LogError($"LogEvent error {eventName}: {ex.GetBaseException()}\n{ex.StackTrace}");
+                Debug.LogError($"LogEvent error {eventName}: {ex.GetBaseException()}\n{ex.StackTrace}");
                 LogDebugAnalytic(LogDebugType.EXCEPTION, eventName, "AnalyticManager", "LogAnalytic",
                     ex.StackTrace.ToString());
             }
@@ -257,7 +280,7 @@ namespace Watermelon
             }
             catch (Exception e)
             {
-                CommonLog.LogError("LogRating error: " + e.StackTrace);
+                Debug.LogError("LogRating error: " + e.StackTrace);
                 LogDebugAnalytic(LogDebugType.EXCEPTION, eventName, "AnalyticManager", "LogAnalytic",
                     e.StackTrace.ToString());
             }
@@ -284,7 +307,7 @@ namespace Watermelon
             }
             catch (Exception e)
             {
-                CommonLog.LogError("LogActivity error: " + e.StackTrace);
+                Debug.LogError("LogActivity error: " + e.StackTrace);
                 LogDebugAnalytic(LogDebugType.EXCEPTION, eventName, "AnalyticManager", "LogAnalytic", e.StackTrace);
             }
         }
@@ -304,7 +327,7 @@ namespace Watermelon
             }
             catch (Exception e)
             {
-                CommonLog.LogError("LogActivityComplete error: " + e.StackTrace);
+                Debug.LogError("LogActivityComplete error: " + e.StackTrace);
                 LogDebugAnalytic(LogDebugType.EXCEPTION, eventName, "AnalyticManager", "LogAnalytic", e.StackTrace);
             }
         }
