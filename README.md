@@ -2,13 +2,11 @@
 
 This guide explains how to install the `com.undercats.sdkcore` package into your Unity project using **Unity Package Manager (UPM)** and **OpenUPM scoped registry**.
 
----
 
 ## Prerequisites
 - Unity version **2019.4 LTS** or newer is recommended.
 - Internet connection (to fetch package from OpenUPM).
 
----
 
 ## Installation Steps
 
@@ -22,8 +20,6 @@ This guide explains how to install the `com.undercats.sdkcore` package into your
    - **Scopes:** `com.undercats`
 5. Save the settings.
 
----
-
 ### 2. Add Package via Unity Package Manager
 1. Open **Window → Package Manager**.
 2. In the top-left corner, click **+** and select **Add by Name...**.
@@ -32,13 +28,11 @@ This guide explains how to install the `com.undercats.sdkcore` package into your
    - **Version:** (optional, leave blank for latest version)
 4. Click **Add**.
 
----
 
 ### 3. Verify Installation
 - Once added, you will see **UnderCats SDK Core** in the list of installed packages in Package Manager.
 - You can now start using the SDK in your project.
 
----
 
 ## Alternative: Add Manually to `manifest.json`
 If you prefer, you can add the package manually:
