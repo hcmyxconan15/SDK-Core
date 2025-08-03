@@ -1,7 +1,7 @@
 {
   "name": "com.unity.watermeloncore",
   "displayName": "WatermelonCore",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "unity": "2021.1",
   "dependencies": {
     "com.unity.servicelocator": "https://github.com/TeamAcMong/Unity-Service-Locator.git#1.0.3",
