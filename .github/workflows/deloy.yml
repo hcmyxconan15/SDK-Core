@@ -22,7 +22,7 @@ jobs:
       - name: Find package.json and extract version
         id: extract_version
         run: |
-          MATCH_FILE=$(find . -type f -name package.json -exec grep -l '"name": "com.undercats.watermeloncore"' {} \;)
+          MATCH_FILE=$(find . -type f -name package.json -exec grep -l '"name": "com.undercats.sdkcore"' {} \;)
 
           if [ -z "$MATCH_FILE" ]; then
             echo "❌ Không tìm thấy package.json phù hợp!"
