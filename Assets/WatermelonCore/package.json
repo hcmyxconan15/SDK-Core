@@ -4,14 +4,13 @@
   "version": "1.0.5",
   "unity": "2021.1",
   "dependencies": {
-    "com.unity.servicelocator": "https://github.com/TeamAcMong/Unity-Service-Locator.git#1.0.3",
-    "com.cysharp.unitask": "2.5.10"
+    "com.undercats.servicelocator
   },
   "samples": [
     {
-      "displayName": "Samples with UI",
-      "description": "Contains sample code for various HTTP related scenarios.",
-      "path": "Samples~/With UI"
+      "displayName": "WatermelonCore",
+      "description": "WatermelonCore",
+      "path": "WatermelonCore"
     }
   ]
 }
