@@ -2,7 +2,9 @@
     "name": "Extra.Monetization.Ads.Providers.Admob.Eidtor",
     "rootNamespace": "",
     "references": [
-        "GUID:b35f729810dd7604db19f3b6b3b97d5f"
+        "GUID:b35f729810dd7604db19f3b6b3b97d5f",
+        "GUID:b144dfb63303ab24680905ee1a718def",
+        "GUID:cbb42e4cfd9484f52972c8f05e1c3252"
     ],
     "includePlatforms": [
         "Editor"
