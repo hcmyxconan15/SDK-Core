@@ -1,0 +1,21 @@
+{
+    "name": "ExtendedInspector.ScenePicker.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:320a7f1e3dd30bf4dbb1ac85ea51c249",
+        "GUID:62f71c4f9698b75448ff4d48c7d8fce7",
+        "GUID:b144dfb63303ab24680905ee1a718def",
+        "GUID:9179da058fa7f1c479b33c0ede07108e"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

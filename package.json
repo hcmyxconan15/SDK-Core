@@ -1,0 +1,16 @@
+{
+  "name": "com.undercats.sdkcore",
+  "displayName": "Sdk Core",
+  "version": "1.0.12",
+  "unity": "2021.1",
+  "dependencies": {
+    "com.undercats.servicelocator": "1.0.7"
+  },
+  "samples": [
+    {
+      "displayName": "Sdk Core",
+      "description": "Sdk Core",
+      "path": "Sdk Core"
+    }
+  ]
+}
