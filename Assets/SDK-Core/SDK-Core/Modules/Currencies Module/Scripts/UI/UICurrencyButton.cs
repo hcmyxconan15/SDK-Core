@@ -131,10 +131,10 @@ namespace Watermelon
 
         private void OnButtonClicked()
         {
+
 #if MODULE_HAPTIC
             Haptic.Play(Haptic.HAPTIC_LIGHT);
 #endif
-
             AudioController.PlaySound(AudioController.AudioClips.buttonSound);
 
             if (CurrenciesController.HasAmount(currencyType, currentPrice))

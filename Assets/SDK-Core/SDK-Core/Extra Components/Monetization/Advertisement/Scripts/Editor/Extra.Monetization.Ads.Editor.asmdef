@@ -1,0 +1,18 @@
+{
+    "name": "Extra.Monetization.Ads.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b35f729810dd7604db19f3b6b3b97d5f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "Editor"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
