@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": "2.5.10",
     "com.undercats.servicelocator": "1.0.6",
     "com.unity.ai.navigation": "2.0.7",
     "com.unity.collab-proxy": "2.8.2",
@@ -54,7 +55,8 @@
       "scopes": [
         "com.undercats.servicelocator",
         "com.google.ads.mobile",
-        "com.google.external-dependency-manager"
+        "com.google.external-dependency-manager",
+        "com.cysharp.unitask"
       ],
       "overrideBuiltIns": true
     }
